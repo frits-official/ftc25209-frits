@@ -7,22 +7,20 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.SampleMecanumDrive;
 
 @TeleOp(group = "Test")
 public class TestIMU extends LinearOpMode {
-    private IMU imu;
+    private SampleMecanumDrive drivetrain;
     @Override
     public void runOpMode() {
-        imu = hardwareMap.get(IMU.class, "imu");
-        imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(
-                                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
-                        )));
+        drivetrain = new SampleMecanumDrive(this.hardwareMap);
+
         waitForStart();
         if (opModeInInit()) {
-            imu.resetYaw();
+            drivetrain.imu.resetYaw();
             while (opModeIsActive()) {
-                YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
+                YawPitchRollAngles robotOrientation = drivetrain.imu.getRobotYawPitchRollAngles();
 
                 telemetry.addData("Yaw", robotOrientation.getYaw(AngleUnit.DEGREES));
                 telemetry.addData("Pitch", robotOrientation.getPitch(AngleUnit.DEGREES));

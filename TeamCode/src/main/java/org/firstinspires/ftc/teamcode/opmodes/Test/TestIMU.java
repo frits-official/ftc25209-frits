@@ -17,7 +17,7 @@ public class TestIMU extends LinearOpMode {
         drivetrain = new SampleMecanumDrive(this.hardwareMap);
 
         waitForStart();
-        if (opModeInInit()) {
+        if (opModeIsActive()) {
             drivetrain.imu.resetYaw();
             while (opModeIsActive()) {
                 YawPitchRollAngles robotOrientation = drivetrain.imu.getRobotYawPitchRollAngles();

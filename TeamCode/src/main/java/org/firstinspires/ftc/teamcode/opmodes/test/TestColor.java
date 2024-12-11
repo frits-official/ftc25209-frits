@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.Test;
+package org.firstinspires.ftc.teamcode.opmodes.test;
 
 import static org.firstinspires.ftc.teamcode.Constant.VISION.*;
 

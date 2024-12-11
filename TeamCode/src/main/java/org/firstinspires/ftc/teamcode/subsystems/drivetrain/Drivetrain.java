@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive;
+package org.firstinspires.ftc.teamcode.subsystems.drivetrain;
 
 import androidx.annotation.NonNull;
 
@@ -21,6 +21,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -37,23 +38,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.kV;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleMecanumDrive extends MecanumDrive {
+public class Drivetrain extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
@@ -79,7 +80,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
 
-    public SampleMecanumDrive(HardwareMap hardwareMap) {
+    public Drivetrain(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -123,6 +124,20 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

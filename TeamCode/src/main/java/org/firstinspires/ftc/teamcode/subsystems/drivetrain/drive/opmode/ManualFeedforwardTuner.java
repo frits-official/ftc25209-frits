@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.kA;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.kStatic;
+import static org.firstinspires.ftc.teamcode.subsystems.drivetrain.DriveConstants.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -22,7 +22,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
 
 import java.util.Objects;
 
@@ -48,7 +48,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    private SampleMecanumDrive drive;
+    private Drivetrain drive;
 
     enum Mode {
         DRIVER_MODE,
@@ -72,7 +72,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new Drivetrain(hardwareMap);
 
         final VoltageSensor voltageSensor = hardwareMap.voltageSensor.iterator().next();
 

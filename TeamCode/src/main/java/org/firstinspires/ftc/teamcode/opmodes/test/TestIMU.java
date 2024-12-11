@@ -1,20 +1,18 @@
-package org.firstinspires.ftc.teamcode.opmodes.Test;
+package org.firstinspires.ftc.teamcode.opmodes.test;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-import org.firstinspires.ftc.teamcode.subsystems.drivetrain.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
 
 @TeleOp(group = "Test")
 public class TestIMU extends LinearOpMode {
-    private SampleMecanumDrive drivetrain;
+    private Drivetrain drivetrain;
     @Override
     public void runOpMode() {
-        drivetrain = new SampleMecanumDrive(this.hardwareMap);
+        drivetrain = new Drivetrain(this.hardwareMap);
 
         waitForStart();
         if (opModeIsActive()) {

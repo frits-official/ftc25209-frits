@@ -23,7 +23,7 @@ public class TestDrivetrainFieldCentric extends LinearOpMode {
 
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.DOWN));
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
 
         imu.initialize(parameters);
 
@@ -37,15 +37,11 @@ public class TestDrivetrainFieldCentric extends LinearOpMode {
             }
 
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-            // Create a vector from the gamepad x/y inputs
-            // Then, rotate that vector by the inverse of that heading
             Vector2d input = new Vector2d(
                     -gamepad1.left_stick_y,
                     -gamepad1.left_stick_x
-            ).rotated(botHeading);
+            ).rotated(-botHeading);
 
-            // Pass in the rotated input + right stick value for rotation
-            // Rotation is not part of the rotated input thus must be passed in separately
             drive.setWeightedDrivePower(
                     new Pose2d(
                             input.getX(),
@@ -56,7 +52,8 @@ public class TestDrivetrainFieldCentric extends LinearOpMode {
 
             drive.update();
 
-            telemetry.addData("head", botHeading);
+            telemetry.addData("head (rad)", botHeading);
+            telemetry.addData("head (deg)", Math.toDegrees(botHeading));
             telemetry.update();
         }
     }

@@ -30,8 +30,7 @@ public class TestArm extends LinearOpMode {
 
             telemetry.addData("power", arm.getPower());
             telemetry.addData("target angle", target);
-            telemetry.addData("raw angle", arm.potentiometer.getRawAngle());
-            telemetry.addData("filtered angle", arm.potentiometer.getFilteredAngle());
+            telemetry.addData("pos", arm.getPos());
             telemetry.update();
         }
     }

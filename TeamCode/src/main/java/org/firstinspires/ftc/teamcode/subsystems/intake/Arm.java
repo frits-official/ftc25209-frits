@@ -8,11 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Constant.ARM;
-import org.firstinspires.ftc.teamcode.subsystems.Potentiometer;
 
 public class Arm {
     private DcMotorEx leftArmMotor, rightArmMotor;
-    public Potentiometer potentiometer;
     private LinearOpMode opMode;
     private PIDEx controller;
     private double targetAngle;
@@ -30,8 +28,6 @@ public class Arm {
         rightArmMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightArmMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        potentiometer = new Potentiometer(opMode);
     }
 
     public void setPIDCoef(PIDCoefficientsEx coef) {
@@ -46,15 +42,16 @@ public class Arm {
     public double getPower() {
         return leftArmMotor.getPower();
     }
+    public double getPos() { return leftArmMotor.getCurrentPosition(); }
 
     public void setTargetAngle(double targetAngle) {
         this.targetAngle = targetAngle;
     }
 
     public void updateMotorPosition() {
-        if (Math.abs(targetAngle - potentiometer.getRawAngle()) < ARM.ANGLE_TOLERANCE) {
-            double power = controller.calculate(targetAngle, potentiometer.getRawAngle());
-            setPower(power);
+        if (Math.abs(targetAngle - getPos()) > ARM.ANGLE_TOLERANCE) {
+            double power = controller.calculate(targetAngle, getPos());
+            setPower(-power);
         } else setPower(0);
     }
 }

@@ -13,7 +13,7 @@ public class Constant {
     }
 
     public static class ARM {
-        public static final double ANGLE_TOLERANCE = 1.5;
+        public static final double ANGLE_TOLERANCE = 1;
     }
 
     public static class SPEED {

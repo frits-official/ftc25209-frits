@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmodes.test;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.subsystems.intake.Arm;
-
-@Config
 @TeleOp(group = "Test")
-public class TestArm extends LinearOpMode {
+public class TestMotor extends LinearOpMode {
     @Override
     public void runOpMode() {
-        Arm arm = new Arm(this);
+        DcMotor testMotor = hardwareMap.get(DcMotor.class, "testMotor");
+
         waitForStart();
         while (opModeIsActive()) {
+            testMotor.setPower(-gamepad1.left_stick_y);
+
 
         }
     }

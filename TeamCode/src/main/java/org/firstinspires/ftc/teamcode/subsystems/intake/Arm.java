@@ -6,20 +6,20 @@ import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedforward.FeedforwardEx;
 import com.ThermalEquilibrium.homeostasis.Filters.Estimators.Estimator;
 import com.ThermalEquilibrium.homeostasis.Filters.Estimators.KalmanEstimator;
-import com.ThermalEquilibrium.homeostasis.Utils.WPILibMotionProfile;
+import com.ThermalEquilibrium.homeostasis.Parameters.FeedforwardCoefficientsEx;
+import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.function.DoubleSupplier;
 
 public class Arm {
     private DcMotorEx leftArmMotor, rightArmMotor;
     private LinearOpMode opMode;
-    private Double targetAngle = null;
+    public Double targetAngle = null;
 
     private VoltageSensor batteryVoltageSensor;
     private PIDEx pid = new PIDEx(ARM_PID_COEFFICIENTS);
@@ -33,10 +33,6 @@ public class Arm {
     };
     private Estimator filter = new KalmanEstimator(encoder, KALMAN_GAIN.Q, KALMAN_GAIN.R, KALMAN_GAIN.N);
 
-    private WPILibMotionProfile motionProfile = null;
-    private ElapsedTime timer = new ElapsedTime();
-    public WPILibMotionProfile.State targetState;
-
     public Arm(LinearOpMode linearOpMode) {
         this.opMode = linearOpMode;
     }
@@ -44,7 +40,7 @@ public class Arm {
     public void init() {
         leftArmMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "leftArmMotor");
         rightArmMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "rightArmMotor");
-        leftArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightArmMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftArmMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightArmMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -62,8 +58,10 @@ public class Arm {
     }
 
     public void setPower(double power) {
-        leftArmMotor.setPower(power);
-        rightArmMotor.setPower(power);
+        double limitedPower = Math.min(Math.abs(power), MAX_VELO) * Math.signum(power);
+
+        leftArmMotor.setPower(limitedPower);
+        rightArmMotor.setPower(limitedPower);
     }
 
     public double getPower() { return rightArmMotor.getPower(); }
@@ -72,17 +70,17 @@ public class Arm {
 
     public void setTargetAngle(Double _target) {
         this.targetAngle = _target;
-        pid = new PIDEx(ARM_PID_COEFFICIENTS);
-        if (targetAngle != null)
-            motionProfile = new WPILibMotionProfile(
-                    ARM_VA_CONSTRAINT,
-                    new WPILibMotionProfile.State(targetAngle, 0),
-                    new WPILibMotionProfile.State(getAngle(), 0));
-        timer.reset();
+        //pid = new PIDEx(ARM_PID_COEFFICIENTS);
     }
 
     public void resetPID() {
         pid = new PIDEx(ARM_PID_COEFFICIENTS);
+    }
+    public void setPIDCoef(PIDCoefficientsEx coef) {
+        pid = new PIDEx(coef);
+    }
+    public void setFFCoef(FeedforwardCoefficientsEx coef) {
+        feedforward = new FeedforwardEx(coef);
     }
 
     public boolean loop() {
@@ -90,20 +88,16 @@ public class Arm {
             pid.calculate(0, getAngle());
             return true;
         }
-        WPILibMotionProfile.State targetState = motionProfile.calculate(timer.seconds());
-        this.targetState = targetState;
-        double pidPow = pid.calculate(targetState.position, getAngle());
+        double pidPow = pid.calculate(targetAngle, getAngle());
         if (Math.abs(getAngle() - targetAngle) < ANGLE_TOLERANCE) {
             setPower(0);
             return true;
         }
 
         double ffPow = feedforward.calculate(
-                Math.toRadians(targetState.position - getAngle()),
-                targetState.velocity,
+                Math.toRadians(targetAngle - getAngle()),
+                0,
                 0);
-        if (timer.seconds() > motionProfile.totalTime())
-            ffPow = 0;
         setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());
         return false;
     }

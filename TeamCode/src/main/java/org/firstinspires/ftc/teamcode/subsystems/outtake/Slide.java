@@ -6,20 +6,20 @@ import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedforward.FeedforwardEx;
 import com.ThermalEquilibrium.homeostasis.Filters.Estimators.Estimator;
 import com.ThermalEquilibrium.homeostasis.Filters.Estimators.KalmanEstimator;
-import com.ThermalEquilibrium.homeostasis.Utils.WPILibMotionProfile;
+import com.ThermalEquilibrium.homeostasis.Parameters.FeedforwardCoefficientsEx;
+import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.function.DoubleSupplier;
 
 public class Slide {
     private DcMotorEx leftSlideMotor, rightSlideMotor;
     private LinearOpMode opMode;
-    private Double target = null;
+    public Double target = null;
 
     private VoltageSensor batteryVoltageSensor;
     private PIDEx pid = new PIDEx(SLIDE_PID_COEFFICIENTS);
@@ -33,10 +33,6 @@ public class Slide {
     };
     private Estimator filter = new KalmanEstimator(encoder, KALMAN_GAIN.Q, KALMAN_GAIN.R, KALMAN_GAIN.N);
 
-    private WPILibMotionProfile motionProfile = null;
-    private ElapsedTime timer = new ElapsedTime();
-    public WPILibMotionProfile.State targetState;
-
     public Slide(LinearOpMode linearOpMode) {
         this.opMode = linearOpMode;
     }
@@ -44,7 +40,6 @@ public class Slide {
     public void init() {
         leftSlideMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "leftSlideMotor");
         rightSlideMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "rightSlideMotor");
-        // TODO: change direction
         leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -67,44 +62,43 @@ public class Slide {
         rightSlideMotor.setPower(power);
     }
 
-    public double getPower() { return rightSlideMotor.getPower(); }
-    public double getCurrentPosition() { return rightSlideMotor.getCurrentPosition(); }
-    public double getTick() { return filter.update(); }
+    public double getPower() { return leftSlideMotor.getPower(); }
+    public double getCurrentPosition() { return leftSlideMotor.getCurrentPosition(); }
+    public double getPos() { return filter.update(); }
 
-    public void setTarget(Double _target) {
-        this.target = _target;
-        pid = new PIDEx(SLIDE_PID_COEFFICIENTS);
-        if (target != null)
-            motionProfile = new WPILibMotionProfile(
-                    SLIDE_VA_CONSTRAINT,
-                    new WPILibMotionProfile.State(target, 0),
-                    new WPILibMotionProfile.State(getTick(), 0));
-        timer.reset();
+    public void manualControl() {
+        setPower((-opMode.gamepad2.right_stick_y + 0.1) * 12 / batteryVoltageSensor.getVoltage());
+        if (opMode.gamepad2.square) resetEncoder();
     }
 
-    public void resetPID() {
-        pid = new PIDEx(SLIDE_PID_COEFFICIENTS);
+    public void setTarget(Double _target) {
+        setPIDCoef(SLIDE_PID_COEFFICIENTS);
+        setFFCoef(SLIDE_FEEDFORWARD_COEFFICIENTS);
+        this.target = _target;
+    }
+
+    public void setPIDCoef(PIDCoefficientsEx coef) {
+        pid = new PIDEx(coef);
+    }
+    public void setFFCoef(FeedforwardCoefficientsEx coef) {
+        feedforward = new FeedforwardEx(coef);
     }
 
     public boolean loop() {
         if (target == null) {
-            pid.calculate(0, getTick());
+            pid.calculate(0, getPos());
             return true;
         }
-        WPILibMotionProfile.State targetState = motionProfile.calculate(timer.seconds());
-        this.targetState = targetState;
-        double pidPow = pid.calculate(targetState.position, getTick());
-        if (Math.abs(getTick() - target) < TOLERANCE) {
+        double pidPow = pid.calculate(target, getPos());
+        if (Math.abs(getPos() - target) < TOLERANCE) {
             setPower(0);
             return true;
         }
 
         double ffPow = feedforward.calculate(
-                targetState.position - getTick(),
-                targetState.velocity,
+                Math.toRadians(target - getPos()),
+                0,
                 0);
-        if (timer.seconds() > motionProfile.totalTime())
-            ffPow = 0;
         setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());
         return false;
     }

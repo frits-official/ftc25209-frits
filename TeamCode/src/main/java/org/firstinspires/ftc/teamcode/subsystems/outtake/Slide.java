@@ -66,9 +66,11 @@ public class Slide {
     public double getCurrentPosition() { return leftSlideMotor.getCurrentPosition(); }
     public double getPos() { return filter.update(); }
 
-    public void manualControl() {
-        setPower((-opMode.gamepad2.right_stick_y + 0.1) * 12 / batteryVoltageSensor.getVoltage());
-        if (opMode.gamepad2.square) resetEncoder();
+    public void manualControl(boolean go) {
+        double power = 0;
+        if (opMode.gamepad1.triangle && (getPos() < 2700) && go) power = 1;
+        else if (opMode.gamepad1.cross && go) power = -1;
+        setPower(power + 0.1);
     }
 
     public void setTarget(Double _target) {

@@ -66,11 +66,22 @@ public class Arm {
 
     public double getPower() { return rightArmMotor.getPower(); }
     public double getCurrentPosition() { return rightArmMotor.getCurrentPosition(); }
-    public double getAngle() { return filter.update() * DEG_PER_TICK + TICK_OFFSET; }
+    public double getAngle() { return getCurrentPosition() * DEG_PER_TICK + TICK_OFFSET; }
 
     public void setTargetAngle(Double _target) {
         this.targetAngle = _target;
         //pid = new PIDEx(ARM_PID_COEFFICIENTS);
+    }
+
+    public void manualControl() {
+        double power = 0;
+        if (opMode.gamepad1.left_bumper && (getAngle() < TRANSFER_ANGLE)) power = 1;
+        else if (opMode.gamepad1.right_bumper && (getAngle() > GRAB_ANGLE)) power = -1;
+        double ffPow = feedforward.calculate(
+                Math.toRadians(getAngle()),
+                0,
+                0);
+        setPower(power + ffPow);
     }
 
     public void resetPID() {
@@ -95,7 +106,7 @@ public class Arm {
         }
 
         double ffPow = feedforward.calculate(
-                Math.toRadians(targetAngle - getAngle()),
+                Math.toRadians(getAngle()),
                 0,
                 0);
         setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());

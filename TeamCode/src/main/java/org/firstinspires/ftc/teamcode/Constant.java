@@ -16,8 +16,9 @@ public class Constant {
 
     public static class ARM {
         public static final double MAX_VELO = 0.5;
-        public static final double GRAB_ANGLE = 19;
+        public static final double GRAB_ANGLE = 15.5;
         public static final double TRANSFER_ANGLE = 115;
+        public static final double WAIT_ANGLE = 38;
         public static final double TICK_PER_REV = 288;
         public static final double GEAR_RATIO = 4;
         public static final double DEG_PER_TICK = 360 / (TICK_PER_REV * GEAR_RATIO);
@@ -56,9 +57,9 @@ public class Constant {
     }
 
     public static class SPEED {
-        public static final double STRAIGHT_SPEED = 1;
-        public static final double STRAFE_SPEED = 1;
-        public static final double TURN_SPEED = 1;
+        public static final double STRAIGHT_SPEED = 0.8;
+        public static final double STRAFE_SPEED = 0.8;
+        public static final double TURN_SPEED = 0.8;
     }
 
     public static class GAMEPAD_SENSITIVITY {

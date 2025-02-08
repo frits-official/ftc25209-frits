@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.outtake;
 
-import static org.firstinspires.ftc.teamcode.Constant.SLIDE.*;
+import static org.firstinspires.ftc.teamcode.Constant.VER_SLIDE.*;
 
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedforward.FeedforwardEx;
@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import java.util.function.DoubleSupplier;
 
-public class Slide {
+public class OuttakeSlide {
     private DcMotorEx leftSlideMotor, rightSlideMotor;
     private LinearOpMode opMode;
     public Double target = null;
@@ -33,7 +33,7 @@ public class Slide {
     };
     private Estimator filter = new KalmanEstimator(encoder, KALMAN_GAIN.Q, KALMAN_GAIN.R, KALMAN_GAIN.N);
 
-    public Slide(LinearOpMode linearOpMode) {
+    public OuttakeSlide(LinearOpMode linearOpMode) {
         this.opMode = linearOpMode;
     }
 
@@ -62,8 +62,8 @@ public class Slide {
         rightSlideMotor.setPower(power);
     }
 
-    public double getPower() { return leftSlideMotor.getPower(); }
-    public double getCurrentPosition() { return leftSlideMotor.getCurrentPosition(); }
+    public double getPower() { return rightSlideMotor.getPower(); }
+    public double getCurrentPosition() { return rightSlideMotor.getCurrentPosition(); }
     public double getPos() { return filter.update(); }
 
     public void manualControl(boolean go) {

@@ -1,22 +1,46 @@
 package org.firstinspires.ftc.teamcode.subsystems.outtake;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
+
+import org.firstinspires.ftc.teamcode.Constant;
 
 public class OuttakeClaw {
     private LinearOpMode opMode;
-    public Servo gripServo, firstOuttakeWristServo, leftSecondWristServo, rightSecondWristServo;
+    public ServoImplEx outtakeClawServo, outtakeWristServo;
+
     public OuttakeClaw(LinearOpMode _opMode) {
         this.opMode = _opMode;
     }
+
     public void init() {
-        gripServo = opMode.hardwareMap.get(Servo.class, "outtakeGrip");
-        firstOuttakeWristServo = opMode.hardwareMap.get(Servo.class, "firstOuttakeWrist");
-        leftSecondWristServo = opMode.hardwareMap.get(Servo.class, "leftSecondOuttakeWrist");
-        rightSecondWristServo = opMode.hardwareMap.get(Servo.class, "rightSecondOuttakeWrist");
+        outtakeClawServo = opMode.hardwareMap.get(ServoImplEx.class, "outtakeClawServo");
+        outtakeWristServo = opMode.hardwareMap.get(ServoImplEx.class, "outtakeWristServo");
+        outtakeClawServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
+        outtakeWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
+
+        rotateJoint(90);
+        release();
     }
-    public void setSecondWristPosition(double pos) {
-        leftSecondWristServo.setPosition(pos);
-        rightSecondWristServo.setPosition(1 - pos);
+
+    public void grab() {
+        outtakeClawServo.setPosition(Constant.CLAW.GRAB);
+    }
+
+    public void release() {
+        outtakeClawServo.setPosition(Constant.CLAW.RELEASE);
+    }
+
+    public void rotateJoint(double angle) {
+        outtakeWristServo.setPosition(angle);
+    }
+
+    public double getClawAngle() {
+        return outtakeWristServo.getPosition();
+    }
+
+    public boolean isGrab() {
+        return (outtakeClawServo.getPosition() == 1);
     }
 }

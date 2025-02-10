@@ -39,6 +39,11 @@ public class Constant {
             public static double Q = 1; // put more on sensor
             public static double R = 0; // put more on regression
         }
+
+        public static class WRIST {
+            public static double EXTEND = 1;
+            public static double RETRACT = 0;
+        }
     }
 
     public static class SPEED {

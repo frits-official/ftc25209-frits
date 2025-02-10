@@ -19,6 +19,8 @@ public class IntakeWrist {
         rightWristServo = opMode.hardwareMap.get(ServoImplEx.class, "rightWristServo");
         leftWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         rightWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
+
+        retract();
     }
 
     public void setPosition(double pos) {

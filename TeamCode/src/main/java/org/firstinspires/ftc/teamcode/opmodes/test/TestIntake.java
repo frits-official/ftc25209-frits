@@ -19,7 +19,7 @@ public class TestIntake extends LinearOpMode {
         claw.init();
         waitForStart();
         while (opModeIsActive()) {
-            slide.setPosition(-gamepad1.left_stick_y + slide.getPosition());
+            slide.setPosition(-gamepad1.left_stick_y * 0.42);
 
             if (gamepad1.triangle) wrist.extend();
             if (gamepad1.cross) wrist.retract();
@@ -27,9 +27,10 @@ public class TestIntake extends LinearOpMode {
             if (gamepad1.square) claw.grab();
             if (gamepad1.circle) claw.release();
 
-            if (gamepad1.dpad_left) claw.rotateClaw(45);
-            if (gamepad1.dpad_up) claw.rotateClaw(90);
-            if (gamepad1.dpad_down) claw.rotateClaw(135);
+            if (gamepad1.dpad_left) claw.rotateClaw(40);
+            if (gamepad1.dpad_right) claw.rotateClaw(120);
+            if (gamepad1.dpad_up) claw.rotateClaw(0);
+            if (gamepad1.dpad_down) claw.rotateClaw(90);
 
             telemetry.addData("slide pos", slide.getPosition());
             telemetry.addData("claw wrist", wrist.getPosition());
@@ -39,3 +40,4 @@ public class TestIntake extends LinearOpMode {
         }
     }
 }
+

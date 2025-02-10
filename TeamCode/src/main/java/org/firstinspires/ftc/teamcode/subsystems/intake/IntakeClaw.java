@@ -19,6 +19,9 @@ public class IntakeClaw {
         intakeWristServo = opMode.hardwareMap.get(ServoImplEx.class, "intakeWristServo");
         intakeClawServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         intakeWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
+
+        rotateClaw(90);
+        release();
     }
 
     public void grab() {

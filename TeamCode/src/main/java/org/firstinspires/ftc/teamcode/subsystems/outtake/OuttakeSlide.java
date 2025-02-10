@@ -38,8 +38,8 @@ public class OuttakeSlide {
     }
 
     public void init() {
-        leftSlideMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "leftSlideMotor");
-        rightSlideMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "rightSlideMotor");
+        leftSlideMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "leftSlide");
+        rightSlideMotor = this.opMode.hardwareMap.get(DcMotorEx.class, "rightSlide");
         leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         leftSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -66,6 +66,9 @@ public class OuttakeSlide {
     public double getCurrentPosition() { return rightSlideMotor.getCurrentPosition(); }
     public double getPos() { return filter.update(); }
 
+    /**
+     * @deprecated
+     */
     public void manualControl(boolean go) {
         double power = 0;
         if (opMode.gamepad1.triangle && (getPos() < 2700) && go) power = 1;
@@ -98,7 +101,7 @@ public class OuttakeSlide {
         }
 
         double ffPow = feedforward.calculate(
-                Math.toRadians(target - getPos()),
+               target - getPos(),
                 0,
                 0);
         setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());

@@ -25,10 +25,10 @@ public class Constant {
 
     public static class VER_SLIDE {
         public static final double RETRACT = 7;
-        public static final double EXTEND = 2700;
+        public static final double EXTEND = 2100;
         public static final double TOLERANCE = 1;
         public static PIDCoefficientsEx SLIDE_PID_COEFFICIENTS = new PIDCoefficientsEx(
-                0.0125, 0.7, 0.008, 0, 0, 0
+                0.005, 0, 0, 0, 0, 0
         );
         public static FeedforwardCoefficientsEx SLIDE_FEEDFORWARD_COEFFICIENTS = new FeedforwardCoefficientsEx(
                 0, 0, 0, 0.1, 0.0
@@ -58,8 +58,8 @@ public class Constant {
     }
 
     public static class HOR_SLIDE {
-        public static final double MAX_POS = 0.38;
+        public static final double MAX_POS = 0.42;
         public static final double WRIST_EXTEND_POS = 0;
-        public static final double WRIST_RETRACT_POS = 1;
+        public static final double WRIST_RETRACT_POS = 0.95;
     }
 }

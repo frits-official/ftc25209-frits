@@ -18,6 +18,7 @@ public class DetectSampleProcessor {
         this.camera = camera;
         this.color = color;
     }
+
     /**
      * Build sample processor
      */
@@ -32,6 +33,7 @@ public class DetectSampleProcessor {
 
         camera.addProcessorToQueue(this.colorLocator);
     }
+
     /**
      * Run detection process
      */
@@ -40,7 +42,7 @@ public class DetectSampleProcessor {
         List<ColorBlobLocatorProcessor.Blob> blobs = colorLocator.getBlobs();
         ColorBlobLocatorProcessor.Util.filterByArea(50, 20000, blobs);
 
-        for(ColorBlobLocatorProcessor.Blob b : blobs) {
+        for (ColorBlobLocatorProcessor.Blob b : blobs) {
             RotatedRect boxFit = b.getBoxFit();
             double angle = boxFit.angle;
             if (boxFit.size.width < boxFit.size.height) {
@@ -49,6 +51,7 @@ public class DetectSampleProcessor {
             angles.add(angle);
         }
     }
+
     /**
      * Get angle list of detected sample
      */

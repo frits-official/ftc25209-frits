@@ -11,8 +11,9 @@ import org.firstinspires.ftc.teamcode.subsystems.outtake.OuttakeWrist;
 @Config
 @TeleOp(group = "Test")
 public class TestOuttake extends LinearOpMode {
-    public static double wristPos = 0;
-    public static double angle = 0;
+    public static double wristPos = 0.35;
+    public static double angle = 0.45;
+
     @Override
     public void runOpMode() {
         OuttakeSlide slide = new OuttakeSlide(this);

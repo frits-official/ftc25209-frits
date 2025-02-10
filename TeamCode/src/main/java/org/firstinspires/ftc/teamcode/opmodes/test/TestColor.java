@@ -13,15 +13,16 @@ import org.firstinspires.ftc.vision.opencv.ColorRange;
 public class TestColor extends LinearOpMode {
     private Camera camera = new Camera(CAMERA_NAME, this);
     private DetectSampleProcessor sampleProcessor = new DetectSampleProcessor(camera, ColorRange.RED);
+
     @Override
     public void runOpMode() {
         sampleProcessor.initSampleProcessor();
         camera.buildCamera(CAMERA_RESOLUTION);
 
         waitForStart();
-        while(opModeIsActive() || opModeInInit()) {
+        while (opModeIsActive() || opModeInInit()) {
             sampleProcessor.process();
-            for (double angle: sampleProcessor.getAngles()) {
+            for (double angle : sampleProcessor.getAngles()) {
                 telemetry.addData("angle: ", angle);
             }
             telemetry.update();

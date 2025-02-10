@@ -37,7 +37,10 @@ public class ManualDrive extends LinearOpMode {
             ));
 
             if (gamepad1.left_bumper) slide.setPosition(0);
-            if (gamepad1.right_bumper) { slide.setPosition(0.43); wrist.retract(); }
+            if (gamepad1.right_bumper) {
+                slide.setPosition(0.43);
+                wrist.retract();
+            }
 
             if (gamepad1.triangle) wrist.extend();
             if (gamepad1.cross) wrist.retract();

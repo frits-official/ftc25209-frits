@@ -62,16 +62,21 @@ public class OuttakeSlide {
         rightSlideMotor.setPower(power);
     }
 
-    public double getPower() { return rightSlideMotor.getPower(); }
-    public double getCurrentPosition() { return rightSlideMotor.getCurrentPosition(); }
-    public double getPos() { return filter.update(); }
+    public double getPower() {
+        return rightSlideMotor.getPower();
+    }
 
-    /**
-     * @deprecated
-     */
+    public double getCurrentPosition() {
+        return rightSlideMotor.getCurrentPosition();
+    }
+
+    public double getPos() {
+        return filter.update();
+    }
+
     public void manualControl(boolean go) {
         double power = 0;
-        if (opMode.gamepad1.triangle && (getPos() < 2700) && go) power = 1;
+        if (opMode.gamepad1.triangle && (getPos() < EXTEND) && go) power = 1;
         else if (opMode.gamepad1.cross && go) power = -1;
         setPower(power + 0.1);
     }
@@ -85,6 +90,7 @@ public class OuttakeSlide {
     public void setPIDCoef(PIDCoefficientsEx coef) {
         pid = new PIDEx(coef);
     }
+
     public void setFFCoef(FeedforwardCoefficientsEx coef) {
         feedforward = new FeedforwardEx(coef);
     }
@@ -101,7 +107,7 @@ public class OuttakeSlide {
         }
 
         double ffPow = feedforward.calculate(
-               target - getPos(),
+                target - getPos(),
                 0,
                 0);
         setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());

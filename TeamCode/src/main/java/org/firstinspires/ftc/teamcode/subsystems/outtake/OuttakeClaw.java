@@ -20,7 +20,7 @@ public class OuttakeClaw {
         outtakeClawServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         outtakeWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
-        rotateJoint(90);
+        bucket();
         release();
     }
 
@@ -35,6 +35,15 @@ public class OuttakeClaw {
     public void rotateJoint(double angle) {
         outtakeWristServo.setPosition(angle);
     }
+
+    public void transfer() {
+        rotateJoint(Constant.VER_SLIDE.JOINT.TRANSFER);
+    }
+
+    public void bucket() {
+        rotateJoint(Constant.VER_SLIDE.JOINT.BUCKET);
+    }
+
 
     public double getClawAngle() {
         return outtakeWristServo.getPosition();

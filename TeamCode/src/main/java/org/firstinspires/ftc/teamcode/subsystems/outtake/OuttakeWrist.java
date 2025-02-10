@@ -20,7 +20,7 @@ public class OuttakeWrist {
         leftWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         rightWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
-        retract();
+        bucket();
     }
 
     public void setPosition(double pos) {
@@ -29,8 +29,13 @@ public class OuttakeWrist {
         rightWristServo.setPosition(1 - pos);
     }
 
-    public void extend() {setPosition(Constant.VER_SLIDE.WRIST.EXTEND);}
-    public void retract() {setPosition(Constant.VER_SLIDE.WRIST.RETRACT);}
+    public void transfer() {
+        setPosition(Constant.VER_SLIDE.WRIST.TRANSFER);
+    }
+
+    public void bucket() {
+        setPosition(Constant.VER_SLIDE.WRIST.BUCKET);
+    }
 
     public double getPosition() {
         return leftWristServo.getPosition();

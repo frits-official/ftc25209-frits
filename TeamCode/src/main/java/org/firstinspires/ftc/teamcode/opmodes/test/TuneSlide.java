@@ -23,6 +23,7 @@ public class TuneSlide extends LinearOpMode {
             0, 0, 0, 0.1, 0.0
     );
     public static double target = 0;
+
     @Override
     public void runOpMode() {
         OuttakeSlide outtakeSlide = new OuttakeSlide(this);

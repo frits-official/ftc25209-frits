@@ -20,7 +20,7 @@ public class OuttakeWrist {
         leftWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         rightWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
-        bucket();
+        transfer();
     }
 
     public void setPosition(double pos) {

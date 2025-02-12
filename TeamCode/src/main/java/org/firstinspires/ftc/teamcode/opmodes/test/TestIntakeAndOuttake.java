@@ -26,16 +26,30 @@ public class TestIntakeAndOuttake extends LinearOpMode {
         intakeSlide.init();
         intakeWrist.init();
         intakeClaw.init();
+
         waitForStart();
+
+        outtakeWrist.bucket();
+        outtakeClaw.bucket();
+
         while (opModeIsActive()) {
-            if (-gamepad1.left_stick_y > 0) intakeSlide.setPosition(0);
+            if (-gamepad1.left_stick_y > 0) {
+                intakeClaw.release();
+                intakeSlide.setPosition(0);
+                outtakeWrist.bucket();
+                outtakeClaw.bucket();
+            }
             if (-gamepad1.left_stick_y < 0) {
                 intakeSlide.setPosition(0.43);
                 intakeWrist.retract();
+                intakeClaw.rotateClaw(90);
+                outtakeWrist.transfer();
+                outtakeClaw.transfer();
+                outtakeClaw.release();
             }
 
-            if (gamepad1.triangle) intakeWrist.extend();
-            if (gamepad1.cross) intakeWrist.retract();
+            if (gamepad1.cross) intakeWrist.extend();
+            if (gamepad1.triangle) intakeWrist.retract();
 
             if (gamepad1.square) intakeClaw.grab();
             if (gamepad1.circle) intakeClaw.release();

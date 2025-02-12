@@ -20,7 +20,7 @@ public class IntakeSlide {
         leftServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         rightServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
-        setPosition(0);
+        setPosition(0.43);
     }
 
     public void setPosition(double pos) {

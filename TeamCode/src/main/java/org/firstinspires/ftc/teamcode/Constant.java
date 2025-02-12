@@ -52,16 +52,16 @@ public class Constant {
     }
 
     public static class SPEED {
-        public static final double STRAIGHT_SPEED = 0.8;
-        public static final double STRAFE_SPEED = 0.8;
+        public static final double STRAIGHT_SPEED = 0.95;
+        public static final double STRAFE_SPEED = 0.95;
         public static final double TURN_SPEED = 0.8;
     }
 
     public static class GAMEPAD_SENSITIVITY {
         // Joystick sensitivity
-        public static final double SENSE_X = 0.15;
-        public static final double SENSE_Y = 0.15;
-        public static final double SENSE_Z = 0.15;
+        public static final double SENSE_X = 0.05;
+        public static final double SENSE_Y = 0.05;
+        public static final double SENSE_Z = 0.05;
 
         // Analog buttons
         public static final double SENSE_TRIGGER = 0.25;

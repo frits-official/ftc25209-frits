@@ -20,7 +20,7 @@ public class OuttakeClaw {
         outtakeClawServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         outtakeWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
-        bucket();
+        transfer();
         release();
     }
 

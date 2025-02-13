@@ -76,8 +76,8 @@ public class OuttakeSlide {
 
     public void manualControl(boolean go) {
         double power = 0;
-        if (opMode.gamepad1.triangle && (getPos() < EXTEND) && go) power = 1;
-        else if (opMode.gamepad1.cross && go) power = -1;
+        if ((-opMode.gamepad2.right_stick_y > 0) && (getPos() < EXTEND) && go) power = -opMode.gamepad2.right_stick_y;
+        else if ((-opMode.gamepad2.right_stick_y < 0) && go) power = -opMode.gamepad2.right_stick_y;
         setPower(power + 0.1);
     }
 

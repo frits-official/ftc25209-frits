@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Constant;
+import org.firstinspires.ftc.teamcode.Utility;
 import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeClaw;
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSlide;
@@ -41,12 +42,12 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
                     -gamepad1.right_stick_x * Constant.SPEED.TURN_SPEED
             ));
             // extend horizontal slide
-            if (-gamepad2.left_stick_y > 0) {
+            if (Utility.sense(-gamepad2.left_stick_y, Constant.HOR_SLIDE.SENSE) > 0) {
                 intakeClaw.release();
                 intakeSlide.setPosition(0);
             }
             // retract horizontal slide
-            if (-gamepad2.left_stick_y < 0) {
+            if (Utility.sense(-gamepad2.left_stick_y, Constant.HOR_SLIDE.SENSE) < 0) {
                 intakeSlide.setPosition(0.43);
                 intakeWrist.retract();
                 intakeClaw.rotateClaw(90);
@@ -81,7 +82,7 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
             if (gamepad2.left_trigger > 0) outtakeClaw.grab();
             if (gamepad2.right_trigger > 0) outtakeClaw.release();
 
-            outtakeSlide.manualControl(true);
+            outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()));
 
             telemetry.addData("intake slide pos", intakeSlide.getPosition());
             telemetry.addData("intake claw wrist", intakeWrist.getPosition());

@@ -25,7 +25,7 @@ public class Constant {
 
     public static class VER_SLIDE {
         public static final double RETRACT = 7;
-        public static final double EXTEND = 2100;
+        public static final double EXTEND = 2200;
         public static final double TOLERANCE = 1;
         public static PIDCoefficientsEx SLIDE_PID_COEFFICIENTS = new PIDCoefficientsEx(
                 0.005, 0, 0, 0, 0, 0
@@ -42,7 +42,7 @@ public class Constant {
 
         public static class WRIST {
             public static double TRANSFER = 0.95;
-            public static double BUCKET = 0.35;
+            public static double BUCKET = 0.45;
         }
 
         public static class JOINT {
@@ -71,5 +71,6 @@ public class Constant {
         public static final double MAX_POS = 0.42;
         public static final double WRIST_EXTEND_POS = 0;
         public static final double WRIST_RETRACT_POS = 0.92;
+        public static final double SENSE = 0.5;
     }
 }

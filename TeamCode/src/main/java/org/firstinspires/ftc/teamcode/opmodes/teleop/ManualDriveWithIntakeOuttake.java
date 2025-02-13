@@ -55,11 +55,11 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
                 outtakeClaw.transfer();
             }
             // extend/retract intake wrist
-            if (gamepad2.cross) intakeWrist.extend();
-            if (gamepad2.triangle) intakeWrist.retract();
+            if (gamepad2.a) intakeWrist.extend();
+            if (gamepad2.y) intakeWrist.retract();
             // grab from ground
-            if (gamepad2.square || gamepad1.x) intakeClaw.grab();
-            if (gamepad2.circle || gamepad1.b) intakeClaw.release();
+            if (gamepad2.x || gamepad1.square) intakeClaw.grab();
+            if (gamepad2.b || gamepad1.circle) intakeClaw.release();
             // rotate intake claw
             if (gamepad1.dpad_right) intakeClaw.rotateClaw(45);
             if (gamepad1.dpad_left) intakeClaw.rotateClaw(135);

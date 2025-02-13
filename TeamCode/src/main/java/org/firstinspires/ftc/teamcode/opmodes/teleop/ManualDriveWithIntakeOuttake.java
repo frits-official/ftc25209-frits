@@ -20,20 +20,29 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
     @Override
     public void runOpMode() {
         Drivetrain drive = new Drivetrain(hardwareMap);
+
         IntakeSlide intakeSlide = new IntakeSlide(this);
         IntakeWrist intakeWrist = new IntakeWrist(this);
         IntakeClaw intakeClaw = new IntakeClaw(this);
+
         OuttakeSlide outtakeSlide = new OuttakeSlide(this);
         OuttakeWrist outtakeWrist = new OuttakeWrist(this);
         OuttakeClaw outtakeClaw = new OuttakeClaw(this);
+
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         outtakeSlide.init();
         outtakeWrist.init();
         outtakeClaw.init();
+
         intakeSlide.init();
         intakeWrist.init();
         intakeClaw.init();
+
         waitForStart();
+
+        if (isStopRequested()) return;
+
         while (opModeIsActive()) {
             // drivetrain
             drive.setWeightedDrivePower(new Pose2d(
@@ -45,12 +54,15 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
             if (Utility.sense(-gamepad2.left_stick_y, Constant.HOR_SLIDE.SENSE) > 0) {
                 intakeClaw.release();
                 intakeSlide.setPosition(0);
+                outtakeWrist.bucket();
+                outtakeClaw.bucket();
             }
             // retract horizontal slide
             if (Utility.sense(-gamepad2.left_stick_y, Constant.HOR_SLIDE.SENSE) < 0) {
                 intakeSlide.setPosition(0.43);
                 intakeWrist.retract();
                 intakeClaw.rotateClaw(90);
+                sleep(200);
                 outtakeWrist.transfer();
                 outtakeClaw.transfer();
             }
@@ -58,8 +70,15 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
             if (gamepad2.a) intakeWrist.extend();
             if (gamepad2.y) intakeWrist.retract();
             // grab from ground
-            if (gamepad2.x || gamepad1.square) intakeClaw.grab();
-            if (gamepad2.b || gamepad1.circle) intakeClaw.release();
+            if (gamepad2.x || gamepad1.square) {
+                if (intakeWrist.getPosition() == Constant.HOR_SLIDE.WRIST_EXTEND_POS) intakeWrist.setPwmDisable();
+                intakeClaw.grab();
+            }
+            if (gamepad2.b || gamepad1.circle) {
+                intakeClaw.release();
+                intakeWrist.setPwmEnable();
+                intakeWrist.setPosition(intakeWrist.getPosition());
+            }
             // rotate intake claw
             if (gamepad1.dpad_right) intakeClaw.rotateClaw(45);
             if (gamepad1.dpad_left) intakeClaw.rotateClaw(135);

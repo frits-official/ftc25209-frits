@@ -24,6 +24,7 @@ public class IntakeWrist {
     }
 
     public void setPosition(double pos) {
+        setPwmEnable();
         pos = Math.max(Math.min(pos, 1), -1);
         leftWristServo.setPosition(pos);
         rightWristServo.setPosition(1 - pos);
@@ -39,5 +40,14 @@ public class IntakeWrist {
 
     public double getPosition() {
         return leftWristServo.getPosition();
+    }
+
+    public void setPwmEnable() {
+        leftWristServo.setPwmEnable();
+        rightWristServo.setPwmEnable();
+    }
+    public void setPwmDisable() {
+        leftWristServo.setPwmDisable();
+        rightWristServo.setPwmDisable();
     }
 }

@@ -39,6 +39,9 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
         intakeWrist.init();
         intakeClaw.init();
 
+        double slidePower = 0;
+        boolean slidePowerLock = false;
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -101,7 +104,16 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
             if (gamepad2.left_trigger > 0) outtakeClaw.grab();
             if (gamepad2.right_trigger > 0) outtakeClaw.release();
 
-            outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()));
+            if (gamepad2.left_bumper) {
+                slidePower = -gamepad2.right_stick_y;
+                slidePowerLock = true;
+            }
+            if (gamepad2.right_bumper) {
+                slidePowerLock = false;
+            }
+
+            if (!slidePowerLock) outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()), -gamepad2.right_stick_y);
+            else outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()), slidePower);
 
             telemetry.addData("intake slide pos", intakeSlide.getPosition());
             telemetry.addData("intake claw wrist", intakeWrist.getPosition());

@@ -74,10 +74,10 @@ public class OuttakeSlide {
         return filter.update();
     }
 
-    public void manualControl(boolean go) {
+    public void manualControl(boolean go, double input) {
         double power = 0;
-        if ((-opMode.gamepad2.right_stick_y > 0) && (getPos() < EXTEND) && go) power = -opMode.gamepad2.right_stick_y;
-        else if ((-opMode.gamepad2.right_stick_y < 0)) power = -opMode.gamepad2.right_stick_y;
+        if ((input > 0) && (getPos() < EXTEND) && go) power = input;
+        else if ((input < 0)) power = input;
         setPower(power + 0.1);
     }
 

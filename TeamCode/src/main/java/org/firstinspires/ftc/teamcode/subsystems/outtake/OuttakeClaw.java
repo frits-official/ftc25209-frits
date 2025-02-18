@@ -21,7 +21,7 @@ public class OuttakeClaw {
         outtakeWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
         transfer();
-        release();
+        grab();
     }
 
     public void grab() {

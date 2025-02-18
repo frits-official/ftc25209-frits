@@ -18,7 +18,7 @@ public class SpecimenClaw {
         specimenServo = opMode.hardwareMap.get(ServoImplEx.class, "specimenServo");
         specimenServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         
-        release();
+        grab();
     }
 
     public void grab() {

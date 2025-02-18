@@ -20,6 +20,7 @@ public class IntakeWrist {
         leftWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
         rightWristServo.setPwmRange(new PwmControl.PwmRange(500, 2500));
 
+        setPwmEnable();
         retract();
     }
 

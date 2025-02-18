@@ -41,13 +41,17 @@ public class Constant {
         }
 
         public static class WRIST {
-            public static double TRANSFER = 0.95;
+            public static double TRANSFER = 0.935;
             public static double BUCKET = 0.45;
+            public static double GET_SPEC = 0.13;
+            public static double GETOFF_SPEC = 0.9;
         }
 
         public static class JOINT {
             public static double TRANSFER = 0;
             public static double BUCKET = 0.45;
+            public static double GET_SPEC = 0.2;
+            public static double GETOFF_SPEC = 0.48;
         }
     }
 

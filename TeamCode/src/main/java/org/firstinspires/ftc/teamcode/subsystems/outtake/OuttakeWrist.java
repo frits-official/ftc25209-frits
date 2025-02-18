@@ -36,6 +36,12 @@ public class OuttakeWrist {
     public void bucket() {
         setPosition(Constant.VER_SLIDE.WRIST.BUCKET);
     }
+    public void getSpecimen() {
+        setPosition(Constant.VER_SLIDE.WRIST.GET_SPEC);
+    }
+    public void getOffSpecimen() {
+        setPosition(Constant.VER_SLIDE.WRIST.GETOFF_SPEC);
+    }
 
     public double getPosition() {
         return leftWristServo.getPosition();

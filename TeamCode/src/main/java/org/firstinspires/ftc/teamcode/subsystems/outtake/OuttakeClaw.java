@@ -44,6 +44,13 @@ public class OuttakeClaw {
         rotateJoint(Constant.VER_SLIDE.JOINT.BUCKET);
     }
 
+    public void getSpecimen() {
+        rotateJoint(Constant.VER_SLIDE.JOINT.GET_SPEC);
+    }
+    public void getOffSpecimen() {
+        rotateJoint(Constant.VER_SLIDE.JOINT.GETOFF_SPEC);
+    }
+
 
     public double getClawAngle() {
         return outtakeWristServo.getPosition();

@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeWrist;
 import org.firstinspires.ftc.teamcode.subsystems.outtake.OuttakeClaw;
 import org.firstinspires.ftc.teamcode.subsystems.outtake.OuttakeSlide;
 import org.firstinspires.ftc.teamcode.subsystems.outtake.OuttakeWrist;
+import org.firstinspires.ftc.teamcode.subsystems.outtake.SpecimenClaw;
 
 @TeleOp(group = "TeleOp")
 public class ManualDriveWithIntakeOuttake extends LinearOpMode {
@@ -28,12 +29,15 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
         OuttakeSlide outtakeSlide = new OuttakeSlide(this);
         OuttakeWrist outtakeWrist = new OuttakeWrist(this);
         OuttakeClaw outtakeClaw = new OuttakeClaw(this);
+        SpecimenClaw specimenClaw = new SpecimenClaw(this);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         outtakeSlide.init();
+        outtakeSlide.resetEncoder();
         outtakeWrist.init();
         outtakeClaw.init();
+        specimenClaw.init();
 
         intakeSlide.init();
         intakeWrist.init();
@@ -65,19 +69,19 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
                 intakeSlide.setPosition(0.43);
                 intakeWrist.retract();
                 intakeClaw.rotateClaw(90);
-                sleep(200);
+                sleep(300);
                 outtakeWrist.transfer();
                 outtakeClaw.transfer();
             }
             // extend/retract intake wrist
-            if (gamepad2.a) intakeWrist.extend();
-            if (gamepad2.y) intakeWrist.retract();
+            if (gamepad2.a || gamepad2.cross) intakeWrist.extend();
+            if (gamepad2.y || gamepad2.triangle) intakeWrist.retract();
             // grab from ground
-            if (gamepad2.x || gamepad1.square) {
+            if (gamepad2.x || gamepad1.square || gamepad2.square) {
                 if (intakeWrist.getPosition() == Constant.HOR_SLIDE.WRIST_EXTEND_POS) intakeWrist.setPwmDisable();
                 intakeClaw.grab();
             }
-            if (gamepad2.b || gamepad1.circle) {
+            if (gamepad2.b || gamepad1.circle || gamepad2.circle) {
                 intakeClaw.release();
                 intakeWrist.setPwmEnable();
                 intakeWrist.setPosition(intakeWrist.getPosition());
@@ -100,6 +104,17 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
                 outtakeWrist.transfer();
                 outtakeClaw.transfer();
             }
+            // go get specimen
+            //if (gamepad2.dpad_left) {
+            //    outtakeClaw.release();
+            //    outtakeWrist.getSpecimen();
+            //    outtakeClaw.getSpecimen();
+            //}
+            // go get off specimen
+            //if (gamepad2.dpad_right) {
+            //    outtakeWrist.getOffSpecimen();
+            //    outtakeClaw.getOffSpecimen();
+            //}
             // outtake claw
             if (gamepad2.left_trigger > 0) outtakeClaw.grab();
             if (gamepad2.right_trigger > 0) outtakeClaw.release();
@@ -114,6 +129,11 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
 
             if (!slidePowerLock) outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()), -gamepad2.right_stick_y);
             else outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()), slidePower);
+
+            if (gamepad1.left_bumper) outtakeSlide.resetEncoder();
+
+            if (gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0) specimenClaw.grab();
+            if (gamepad1.right_trigger > 0 || gamepad2.right_trigger > 0) specimenClaw.release();
 
             telemetry.addData("intake slide pos", intakeSlide.getPosition());
             telemetry.addData("intake claw wrist", intakeWrist.getPosition());

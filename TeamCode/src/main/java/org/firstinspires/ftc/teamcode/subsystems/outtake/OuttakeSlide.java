@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.function.DoubleSupplier;
 
@@ -33,6 +34,7 @@ public class OuttakeSlide {
     };
     private Estimator filter = new KalmanEstimator(encoder, KALMAN_GAIN.Q, KALMAN_GAIN.R, KALMAN_GAIN.N);
 
+    public ElapsedTime timer = new ElapsedTime();
     public OuttakeSlide(LinearOpMode linearOpMode) {
         this.opMode = linearOpMode;
     }
@@ -57,7 +59,8 @@ public class OuttakeSlide {
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void setPower(double power) {
+    public void setPower(double _power) {
+        double power = _power * 12 / batteryVoltageSensor.getVoltage();
         leftSlideMotor.setPower(power);
         rightSlideMotor.setPower(power);
     }
@@ -85,6 +88,7 @@ public class OuttakeSlide {
         setPIDCoef(SLIDE_PID_COEFFICIENTS);
         setFFCoef(SLIDE_FEEDFORWARD_COEFFICIENTS);
         this.target = _target;
+        timer.reset();
     }
 
     public void setPIDCoef(PIDCoefficientsEx coef) {
@@ -106,11 +110,13 @@ public class OuttakeSlide {
             return true;
         }
 
+        if (timer.milliseconds() > 1500) return true;
+
         double ffPow = feedforward.calculate(
                 target - getPos(),
                 0,
                 0);
-        setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());
+        setPower((ffPow + pidPow));
         return false;
     }
 }

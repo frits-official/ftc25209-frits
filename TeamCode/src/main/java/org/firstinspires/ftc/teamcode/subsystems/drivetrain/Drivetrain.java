@@ -28,6 +28,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.drivetrain.trajectorysequence.TrajectorySequence;
@@ -339,5 +340,14 @@ public class Drivetrain extends MecanumDrive {
                         -turn
                 )
         );
+    }
+    public void goForward(double pow) {
+        setWeightedDrivePower(new Pose2d(pow, 0, 0));
+    }
+    public void strafeLeft(double pow) {
+        setWeightedDrivePower(new Pose2d(0, pow, 0));
+    }
+    public void strafeRight(double pow) {
+        setWeightedDrivePower(new Pose2d(0, -pow, 0));
     }
 }

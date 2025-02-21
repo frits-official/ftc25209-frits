@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Constant.SPEED;
+import org.firstinspires.ftc.teamcode.subsystems.drivetrain.DistanceSensorLocalizer;
 import org.firstinspires.ftc.teamcode.subsystems.drivetrain.Drivetrain;
 
 @TeleOp(group = "Test")
@@ -13,7 +14,9 @@ public class TestDrivetrainBotCentric extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Drivetrain drive = new Drivetrain(hardwareMap);
+        DistanceSensorLocalizer localizer = new DistanceSensorLocalizer(this);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        localizer.init();
 
         waitForStart();
 
@@ -25,6 +28,11 @@ public class TestDrivetrainBotCentric extends LinearOpMode {
                     -gamepad1.left_stick_x * SPEED.STRAFE_SPEED,
                     -gamepad1.right_stick_x * SPEED.TURN_SPEED
             ));
+
+            telemetry.addData("left", localizer.getLeftDis());
+            telemetry.addData("right", localizer.getRightDis());
+            telemetry.addData("rear", localizer.getRearDis());
+            telemetry.update();
         }
     }
 }

@@ -69,6 +69,7 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
                 intakeSlide.setPosition(0.43);
                 intakeWrist.retract();
                 intakeClaw.rotateClaw(90);
+                outtakeClaw.release();
                 sleep(300);
                 outtakeWrist.transfer();
                 outtakeClaw.transfer();
@@ -118,7 +119,7 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
             // outtake claw
             if (gamepad2.left_trigger > 0) outtakeClaw.grab();
             if (gamepad2.right_trigger > 0) outtakeClaw.release();
-
+            /*
             if (gamepad2.left_bumper) {
                 slidePower = -gamepad2.right_stick_y;
                 slidePowerLock = true;
@@ -129,7 +130,8 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
 
             if (!slidePowerLock) outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()), -gamepad2.right_stick_y);
             else outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()), slidePower);
-
+            */
+            outtakeSlide.manualControl((!intakeClaw.isGrab()) && (outtakeClaw.isGrab()) || gamepad2.left_bumper, -gamepad2.right_stick_y);
             if (gamepad1.left_bumper) outtakeSlide.resetEncoder();
 
             if (gamepad1.left_trigger > 0 || gamepad2.left_trigger > 0) specimenClaw.grab();

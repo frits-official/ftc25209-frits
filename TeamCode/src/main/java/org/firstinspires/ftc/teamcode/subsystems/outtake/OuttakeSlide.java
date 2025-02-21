@@ -59,8 +59,7 @@ public class OuttakeSlide {
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void setPower(double _power) {
-        double power = _power * 12 / batteryVoltageSensor.getVoltage();
+    public void setPower(double power) {
         leftSlideMotor.setPower(power);
         rightSlideMotor.setPower(power);
     }
@@ -116,7 +115,7 @@ public class OuttakeSlide {
                 target - getPos(),
                 0,
                 0);
-        setPower((ffPow + pidPow));
+        setPower((ffPow + pidPow) * 12 / batteryVoltageSensor.getVoltage());
         return false;
     }
 }

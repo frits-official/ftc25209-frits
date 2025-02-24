@@ -59,7 +59,7 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
             ));
             // extend horizontal slide
             if (Utility.sense(-gamepad2.left_stick_y, Constant.HOR_SLIDE.SENSE) > 0) {
-                intakeClaw.release();
+                //intakeClaw.release();
                 intakeSlide.setPosition(0);
                 outtakeWrist.bucket();
                 outtakeClaw.bucket();
@@ -74,12 +74,12 @@ public class ManualDriveWithIntakeOuttake extends LinearOpMode {
                 outtakeWrist.transfer();
                 outtakeClaw.transfer();
             }
-            // extend/retract intake wrist
+            // extend/retract intake wri st
             if (gamepad2.a || gamepad2.cross) intakeWrist.extend();
             if (gamepad2.y || gamepad2.triangle) intakeWrist.retract();
             // grab from ground
             if (gamepad2.x || gamepad1.square || gamepad2.square) {
-                if (intakeWrist.getPosition() == Constant.HOR_SLIDE.WRIST_EXTEND_POS) intakeWrist.setPwmDisable();
+                //if (intakeWrist.getPosition() == Constant.HOR_SLIDE.WRIST_EXTEND_POS) intakeWrist.setPwmDisable();
                 intakeClaw.grab();
             }
             if (gamepad2.b || gamepad1.circle || gamepad2.circle) {

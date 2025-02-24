@@ -76,8 +76,6 @@ public class AutoSamples extends LinearOpMode {
         sleep(800);
         outtakeClaw.release();
         sleep(500);
-        outtakeWrist.transfer();
-        outtakeClaw.transfer();
     }
 
     @Override

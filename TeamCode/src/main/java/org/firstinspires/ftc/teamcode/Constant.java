@@ -58,7 +58,7 @@ public class Constant {
     public static class SPEED {
         public static final double STRAIGHT_SPEED = 0.95;
         public static final double STRAFE_SPEED = 0.95;
-        public static final double TURN_SPEED = 0.95;
+        public static final double TURN_SPEED = 0.8;
     }
 
     public static class GAMEPAD_SENSITIVITY {

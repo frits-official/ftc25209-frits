@@ -74,6 +74,7 @@ public class Constant {
     public static class HOR_SLIDE {
         public static final double MAX_POS = 0.42;
         public static final double WRIST_EXTEND_POS = 0;
+        public static final double WRIST_SEMI_EXTEND_POS = 0.04;
         public static final double WRIST_RETRACT_POS = 0.92;
         public static final double SENSE = 0.5;
     }

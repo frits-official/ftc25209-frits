@@ -38,6 +38,9 @@ public class IntakeWrist {
     public void retract() {
         setPosition(Constant.HOR_SLIDE.WRIST_RETRACT_POS);
     }
+    public void semiExtend() {
+        setPosition(Constant.HOR_SLIDE.WRIST_SEMI_EXTEND_POS);
+    }
 
     public double getPosition() {
         return leftWristServo.getPosition();
